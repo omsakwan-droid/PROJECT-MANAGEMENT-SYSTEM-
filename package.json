@@ -1,0 +1,15 @@
+{
+  "name": "mainproject",
+  "version": "1.0.0",
+  "description": "project management application for beginners",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "prettier": "3.9.4"
+  }
+}
