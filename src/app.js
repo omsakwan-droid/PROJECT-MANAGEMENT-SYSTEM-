@@ -1,5 +1,8 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+
+
 
 
 const app = express();
@@ -17,6 +20,9 @@ app.use(cors({
 
 })
 );
+
+// cookie parser configuration
+app.use(cookieParser());
 
 // importing healthcheck route
 

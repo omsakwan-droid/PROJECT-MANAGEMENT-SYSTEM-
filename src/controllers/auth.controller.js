@@ -80,5 +80,54 @@ const registerUser=asyncHandler(async(req,res)=>{
 
 })
 
+const login=asyncHandler(async(req,res)=>{
+  const {email,password}=req.body;
+if(!email){
+    throw new ApiError(400,"email is required",[]);
+}
 
-export{registerUser};
+const user=await User.findOne({email});
+
+if(!user){
+  throw new ApiError(400,"user doesn't exist",[]);
+}
+
+const isPasswordcorrect=await user.isPasswordcorrect(password);
+
+if(!isPasswordcorrect){
+  throw new ApiError(400,"password is incorrect",[]);
+}
+
+const {accessToken,refreshToken}=await generateAccessandRefreshTokens(user._id);
+
+
+const loggedinUser = await User.findById(user._id).select(
+        "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+      );
+
+  
+const options={
+  httpOnly:true,
+  secure:true
+}
+
+return res
+.status(200)
+.cookie("refreshtoken",refreshToken,options)
+.cookie("accesstoken",accessToken,options)
+.json( new ApiResponse(
+  200,{
+    user:loggedinUser ,
+    accessToken,
+    refreshToken
+  },
+  "User logged in successfully"
+))
+
+
+})
+
+
+export{registerUser,login};
+
+
