@@ -47,7 +47,7 @@ const registerUser=asyncHandler(async(req,res)=>{
 
 
     user.emailVerificationToken=hashedToken;
-    user.emailVerificationTokenExpiry=tokenExpiry;
+   user.emailVerificationExpiry = tokenExpiry;
     await user.save({validateBeforeSave:false});
 
 
